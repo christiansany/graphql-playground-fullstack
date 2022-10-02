@@ -1,0 +1,62 @@
+type Query {
+  productRating(id: ID!): ProductRating
+  productRatings( # TODO: implement sortKey
+    first: Int
+    last: Int
+    before: String
+    after: String
+    query: String
+  ): ProductRatingConnection!
+}
+
+type ProductRating implements Node & Timestamps & Votable & Contribution {
+  id: ID!
+  title: String
+  text: String
+  ratingScore: Int! # Todo: make custom Scalar Type
+  creatorIsVerifiedBuyer: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  pros: [String!]
+  cons: [String!]
+  votesSummary: VotesSummary!
+  userVote: Vote
+  product: Product!
+  creator: User!
+}
+
+type ProductRatingEdge implements Edge {
+  cursor: String!
+  node: ProductRating!
+}
+
+type ProductRatingConnection implements Connection {
+  edges: [ProductRatingEdge!]!
+  pageInfo: PageInfo!
+}
+
+# Summary
+type ProductRatingsSummary {
+  averageRating: Float!
+  totalRatings: Int!
+}
+
+# Connections
+extend type User {
+  productRatings( # TODO: implement sortKey & query
+    first: Int
+    last: Int
+    before: String
+    after: String
+  ): ProductRatingConnection!
+}
+
+extend type Product {
+  productRatingsSummary: ProductRatingsSummary!
+  productRatings( # TODO: implement sortKey & query
+    first: Int
+    last: Int
+    before: String
+    after: String
+  ): ProductRatingConnection!
+}

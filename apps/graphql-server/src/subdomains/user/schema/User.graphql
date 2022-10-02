@@ -1,0 +1,15 @@
+type User implements Node {
+  id: ID!
+  username: String!
+  email: String!
+}
+
+# type UserEdge implements Edge {
+#   cursor: String!
+#   node: User!
+# }
+
+# type UserConnection implements Connection {
+#   edges: [UserEdge!]!
+#   pageInfo: PageInfo!
+# }

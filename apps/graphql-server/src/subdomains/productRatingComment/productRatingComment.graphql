@@ -1,0 +1,49 @@
+type Query {
+  productRatingComment(id: ID!): ProductRatingComment
+  productRatingComments(
+    first: Int
+    last: Int
+    before: String
+    after: String
+  ): ProductRatingCommentConnection!
+}
+
+type ProductRatingComment implements Node & Timestamps & Votable & Contribution {
+  id: ID!
+  text: String!
+  rating: ProductRating!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  votesSummary: VotesSummary!
+  userVote: Vote
+  creator: User!
+}
+
+type ProductRatingCommentEdge implements Edge {
+  cursor: String!
+  node: ProductRatingComment!
+}
+
+type ProductRatingCommentConnection implements Connection {
+  edges: [ProductRatingCommentEdge!]!
+  pageInfo: PageInfo!
+}
+
+# Connections
+extend type User {
+  productRatingComments(
+    first: Int
+    last: Int
+    before: String
+    after: String
+  ): ProductRatingCommentConnection!
+}
+
+extend type ProductRating {
+  comments(
+    first: Int
+    last: Int
+    before: String
+    after: String
+  ): ProductRatingCommentConnection!
+}

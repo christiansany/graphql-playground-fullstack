@@ -9,6 +9,14 @@
       "outputs": []
     },
     "dev": {
+      "dependsOn": ["^codegen"],
+      "cache": false
+    },
+    "codegen": {
+      "cache": true,
+      "outputs": ["__generated__/**"]
+    },
+    "tsc": {
       "cache": false
     }
   }

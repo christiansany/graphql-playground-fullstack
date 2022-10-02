@@ -1,0 +1,18 @@
+interface DisplayableError {
+  field: [String!]
+  message: String!
+}
+
+type UserError implements DisplayableError {
+  field: [String!]
+  message: String!
+}
+
+interface Contribution {
+  creator: User!
+}
+
+interface Timestamps {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}

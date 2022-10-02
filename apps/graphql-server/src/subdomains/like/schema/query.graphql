@@ -1,0 +1,46 @@
+interface Likeable implements Node {
+  id: ID!
+  likeSummary: LikeSummary!
+  userLike: Like
+}
+
+type LikeSummary {
+  countLikes: Int!
+  countDislikes: Int!
+}
+
+type Like {
+  user: User
+  type: LikeType!
+}
+
+# type Like implements Timestamps {
+#   id: ID!
+#   user: User!
+#   type: LikeType!
+#   createdAt: DateTime!
+#   updatedAt: DateTime!
+# }
+
+enum LikeType {
+  Like
+  Dislike
+}
+
+# Connections
+extend type User {
+  likedProducts: [Product!]!
+  dislikedProducts: [Product!]!
+  likedBrands: [Brand!]!
+  dislikedBrands: [Brand!]!
+}
+
+extend type Product implements Likeable {
+  likeSummary: LikeSummary!
+  userLike: Like
+}
+
+extend type Brand implements Likeable {
+  likeSummary: LikeSummary!
+  userLike: Like
+}

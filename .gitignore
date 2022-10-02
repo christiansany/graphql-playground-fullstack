@@ -31,3 +31,10 @@ yarn-error.log*
 
 # turbo
 .turbo
+
+# misc
+dist/
+.idea
+**/*.log
+.DS_Store
+nodemon.json

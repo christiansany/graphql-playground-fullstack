@@ -1,0 +1,19 @@
+schema: "src/**/*.graphql"
+generates:
+  __generated__/schema.generated.ts:
+    plugins:
+      - typescript
+      - typescript-resolvers
+    config:
+      skipTypename: true
+      namingConvention:
+        typeNames: change-case#pascalCase
+        enumValues: keep
+      contextType: ../src/server/types#GraphQLCustomResolversContext
+      scalars:
+        Void: "void"
+      mappers:
+        User: ../src/subdomains/user/data-sources/user.types#UserDocument
+        Product: ../src/subdomains/product/data-sources/product.types#ProductDocument
+        Brand: ../src/subdomains/brand/data-sources/brand.types#BrandDocument
+        Like: ../src/subdomains/like/data-sources/like.types#LikeDocument

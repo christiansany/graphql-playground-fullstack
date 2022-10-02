@@ -1,0 +1,11 @@
+type Mutation {
+  likeAdd(id: ID!): LikePayload!
+  likeDelete(id: ID!): LikePayload!
+  dislikeAdd(id: ID!): LikePayload!
+  dislikeDelete(id: ID!): LikePayload!
+}
+
+type LikePayload {
+  userErrors: [UserError!]!
+  likable: Likeable
+}
