@@ -1,3 +1,4 @@
 type Query {
   brand(id: ID!): Brand
+  brands: [Brand!]!
 }

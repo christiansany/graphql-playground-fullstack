@@ -16,6 +16,10 @@
       "cache": true,
       "outputs": ["__generated__/**"]
     },
+    "codegen:watch": {
+      "cache": true,
+      "outputs": ["__generated__/**"]
+    },
     "tsc": {
       "cache": false
     }

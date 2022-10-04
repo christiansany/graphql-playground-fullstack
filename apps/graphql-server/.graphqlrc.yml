@@ -5,7 +5,7 @@ generates:
       - typescript
       - typescript-resolvers
     config:
-      skipTypename: true
+      skipTypename: false
       namingConvention:
         typeNames: change-case#pascalCase
         enumValues: keep

@@ -11,7 +11,8 @@
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "codegen": "turbo run codegen"
+    "codegen": "turbo run codegen",
+    "codegen:watch": "turbo run codegen:watch"
   },
   "devDependencies": {
     "eslint-config-custom": "*",
@@ -21,6 +22,5 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "dependencies": {},
   "packageManager": "npm@8.1.2"
 }

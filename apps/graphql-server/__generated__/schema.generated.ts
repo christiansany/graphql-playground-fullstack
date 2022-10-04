@@ -21,6 +21,7 @@ export type Scalars = {
 };
 
 export type Brand = Likeable & Node & {
+  __typename?: 'Brand';
   id: Scalars['ID'];
   likeSummary: LikeSummary;
   name: Scalars['String'];
@@ -59,6 +60,7 @@ export type Edge = {
 
 
 export type Like = {
+  __typename?: 'Like';
   type: LikeType;
   user?: Maybe<User>;
 };
@@ -70,11 +72,13 @@ export type Likeable = {
 };
 
 export type LikePayload = {
+  __typename?: 'LikePayload';
   likable?: Maybe<Likeable>;
   userErrors: Array<UserError>;
 };
 
 export type LikeSummary = {
+  __typename?: 'LikeSummary';
   countDislikes: Scalars['Int'];
   countLikes: Scalars['Int'];
 };
@@ -85,6 +89,7 @@ export enum LikeType {
 }
 
 export type Mutation = {
+  __typename?: 'Mutation';
   dislikeAdd: LikePayload;
   dislikeDelete: LikePayload;
   likeAdd: LikePayload;
@@ -125,6 +130,7 @@ export type Node = {
  * [Relay specification](https://relay.dev/graphql/connections.htm#sec-undefined.PageInfo).
  */
 export type PageInfo = {
+  __typename?: 'PageInfo';
   /** The cursor corresponding to the last node in edges. */
   endCursor?: Maybe<Scalars['String']>;
   /** Whether there are more pages to fetch following the current page. */
@@ -136,6 +142,7 @@ export type PageInfo = {
 };
 
 export type Product = Likeable & Node & {
+  __typename?: 'Product';
   description: Scalars['String'];
   id: Scalars['ID'];
   likeSummary: LikeSummary;
@@ -155,6 +162,7 @@ export type ProductProductRatingsArgs = {
 };
 
 export type ProductRating = Contribution & Node & Timestamps & Votable & {
+  __typename?: 'ProductRating';
   comments: ProductRatingCommentConnection;
   cons?: Maybe<Array<Scalars['String']>>;
   createdAt: Scalars['DateTime'];
@@ -180,6 +188,7 @@ export type ProductRatingCommentsArgs = {
 };
 
 export type ProductRatingComment = Contribution & Node & Timestamps & Votable & {
+  __typename?: 'ProductRatingComment';
   createdAt: Scalars['DateTime'];
   creator: User;
   id: Scalars['ID'];
@@ -191,32 +200,39 @@ export type ProductRatingComment = Contribution & Node & Timestamps & Votable & 
 };
 
 export type ProductRatingCommentConnection = Connection & {
+  __typename?: 'ProductRatingCommentConnection';
   edges: Array<ProductRatingCommentEdge>;
   pageInfo: PageInfo;
 };
 
 export type ProductRatingCommentEdge = Edge & {
+  __typename?: 'ProductRatingCommentEdge';
   cursor: Scalars['String'];
   node: ProductRatingComment;
 };
 
 export type ProductRatingConnection = Connection & {
+  __typename?: 'ProductRatingConnection';
   edges: Array<ProductRatingEdge>;
   pageInfo: PageInfo;
 };
 
 export type ProductRatingEdge = Edge & {
+  __typename?: 'ProductRatingEdge';
   cursor: Scalars['String'];
   node: ProductRating;
 };
 
 export type ProductRatingsSummary = {
+  __typename?: 'ProductRatingsSummary';
   averageRating: Scalars['Float'];
   totalRatings: Scalars['Int'];
 };
 
 export type Query = {
+  __typename?: 'Query';
   brand?: Maybe<Brand>;
+  brands: Array<Brand>;
   me?: Maybe<User>;
   node?: Maybe<Node>;
   nodes: Array<Node>;
@@ -225,6 +241,7 @@ export type Query = {
   productRatingComment?: Maybe<ProductRatingComment>;
   productRatingComments: ProductRatingCommentConnection;
   productRatings: ProductRatingConnection;
+  products: Array<Product>;
   user?: Maybe<User>;
 };
 
@@ -286,6 +303,7 @@ export type Timestamps = {
 };
 
 export type User = Node & {
+  __typename?: 'User';
   dislikedBrands: Array<Brand>;
   dislikedProducts: Array<Product>;
   email: Scalars['String'];
@@ -314,6 +332,7 @@ export type UserProductRatingsArgs = {
 };
 
 export type UserError = DisplayableError & {
+  __typename?: 'UserError';
   field?: Maybe<Array<Scalars['String']>>;
   message: Scalars['String'];
 };
@@ -324,6 +343,7 @@ export type Votable = {
 };
 
 export type Vote = Timestamps & {
+  __typename?: 'Vote';
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   type: VoteType;
@@ -332,6 +352,7 @@ export type Vote = Timestamps & {
 };
 
 export type VotesSummary = {
+  __typename?: 'VotesSummary';
   /** All cumulative AbusiveVotes */
   countAbusive: Scalars['Int'];
   /** All cumulative DownVotes */
@@ -666,6 +687,7 @@ export type ProductRatingsSummaryResolvers<ContextType = GraphQLCustomResolversC
 
 export type QueryResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   brand?: Resolver<Maybe<ResolversTypes['Brand']>, ParentType, ContextType, RequireFields<QueryBrandArgs, 'id'>>;
+  brands?: Resolver<Array<ResolversTypes['Brand']>, ParentType, ContextType>;
   me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   node?: Resolver<Maybe<ResolversTypes['Node']>, ParentType, ContextType, RequireFields<QueryNodeArgs, 'id'>>;
   nodes?: Resolver<Array<ResolversTypes['Node']>, ParentType, ContextType, RequireFields<QueryNodesArgs, 'ids'>>;
@@ -674,6 +696,7 @@ export type QueryResolvers<ContextType = GraphQLCustomResolversContext, ParentTy
   productRatingComment?: Resolver<Maybe<ResolversTypes['ProductRatingComment']>, ParentType, ContextType, RequireFields<QueryProductRatingCommentArgs, 'id'>>;
   productRatingComments?: Resolver<ResolversTypes['ProductRatingCommentConnection'], ParentType, ContextType, RequireFields<QueryProductRatingCommentsArgs, never>>;
   productRatings?: Resolver<ResolversTypes['ProductRatingConnection'], ParentType, ContextType, RequireFields<QueryProductRatingsArgs, never>>;
+  products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
 };
 

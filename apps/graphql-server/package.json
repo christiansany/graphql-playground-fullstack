@@ -15,6 +15,7 @@
     "#prettier": "prettier --check **/*.{graphql,js,json,json5,md,ts,yaml,yml}",
     "#prettier:write": "prettier --write **/*.{graphql,js,json,json5,md,ts,yaml,yml}",
     "codegen": "gql-gen --config ./.graphqlrc.yml",
+    "codegen:watch": "gql-gen --config ./.graphqlrc.yml --watch",
     "#test": "jest"
   },
   "dependencies": {

@@ -1,1 +1,4 @@
 schema: "apps/graphql-server/src/**/*.graphql"
+documents:
+  - "apps/web/pages/**/*.(tsx|ts)"
+  - "apps/web/src/**/*.(tsx|ts)"

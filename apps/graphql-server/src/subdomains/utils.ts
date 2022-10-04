@@ -1,6 +1,14 @@
 const toBase64 = (str: string | number) =>
   Buffer.from(str.toString(), "utf-8").toString("base64");
 
+interface IPaginationArgs {
+  first: number;
+  last: number;
+  before: string;
+  after: string;
+  query: string;
+}
+
 export const createSmartCollection = <T extends object>(
   data: T[],
   indexNames: string[]
@@ -9,7 +17,7 @@ export const createSmartCollection = <T extends object>(
   return {
     data,
     indexes,
-    paginate({ first, last, before, after, query }) {
+    paginate({ first, last, before, after, query }: IPaginationArgs) {
       if (!first && !last) {
         throw new Error("Neither first or last was given.");
       }
