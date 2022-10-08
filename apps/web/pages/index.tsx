@@ -36,8 +36,6 @@ export const getServerSideProps: GetServerSideProps<{
 export default function Home({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log({ data });
-
   return (
     <div>
       <Head>

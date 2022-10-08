@@ -9,7 +9,7 @@ type Query {
   ): ProductRatingConnection!
 }
 
-type ProductRating implements Node & Timestamps & Votable & Contribution {
+type ProductRating implements Node & Timestamps & Contribution {
   id: ID!
   title: String
   text: String
@@ -19,8 +19,6 @@ type ProductRating implements Node & Timestamps & Votable & Contribution {
   updatedAt: DateTime!
   pros: [String!]
   cons: [String!]
-  votesSummary: VotesSummary!
-  userVote: Vote
   product: Product!
   creator: User!
 }

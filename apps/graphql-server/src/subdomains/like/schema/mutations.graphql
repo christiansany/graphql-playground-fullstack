@@ -1,11 +1,26 @@
 type Mutation {
-  likeAdd(id: ID!): LikePayload!
-  likeDelete(id: ID!): LikePayload!
-  dislikeAdd(id: ID!): LikePayload!
-  dislikeDelete(id: ID!): LikePayload!
+  likeAdd(id: ID!): LikeAddPayload!
+  likeDelete(id: ID!): LikeDeletePayload!
+  dislikeAdd(id: ID!): DislikeAddPayload!
+  dislikeDelete(id: ID!): DislikeDeletePayload!
 }
 
-type LikePayload {
+type LikeAddPayload {
+  userErrors: [UserError!]!
+  likable: Likeable
+}
+
+type LikeDeletePayload {
+  userErrors: [UserError!]!
+  likable: Likeable
+}
+
+type DislikeAddPayload {
+  userErrors: [UserError!]!
+  likable: Likeable
+}
+
+type DislikeDeletePayload {
   userErrors: [UserError!]!
   likable: Likeable
 }

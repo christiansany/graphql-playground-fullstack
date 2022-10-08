@@ -3,6 +3,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { LikeableInfo } from "../../src/components/LikeableInfo";
 import { LikeDislikeActions } from "../../src/components/LikeDislikeActions";
+import { VoteableInfo } from "../../src/components/VoteableInfo";
+import { VoteActions } from "../../src/components/VoteActions";
 import { graphql } from "../../__generated__/gql";
 
 const GetBrandDocument = graphql(`
@@ -12,6 +14,8 @@ const GetBrandDocument = graphql(`
       name
       ...LikeableInfo_Likeable
       ...LikeDislikeActions_Likeable
+      ...VoteableInfo_Voteable
+      ...VoteActions_Voteable
     }
   }
 `);
@@ -23,8 +27,6 @@ export default function Brand() {
       id: decodeURIComponent((query?.id as string) || ""),
     },
   });
-
-  console.log({ data });
 
   if (!data?.brand) return null;
 
@@ -38,8 +40,12 @@ export default function Brand() {
 
       <main>
         <h1>Brand: {data.brand.name}</h1>
+        <hr />
         <LikeableInfo likeable={data.brand} />
         <LikeDislikeActions likeable={data.brand} />
+        <hr />
+        <VoteableInfo voteable={data.brand} />
+        <VoteActions voteable={data.brand} />
       </main>
     </div>
   );

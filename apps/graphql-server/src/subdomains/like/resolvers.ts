@@ -96,7 +96,10 @@ const getLikeable = (id: string, dataSources: GraphQLCustomDataSources) =>
 
 const getLikeableTypeName = (id: string) => {
   const [type] = id.split(":");
-  return (type.charAt(0).toUpperCase() + type.slice(1)) as "Brand" | "Product";
+  const typeName = (type.charAt(0).toUpperCase() + type.slice(1)) as
+    | "Brand"
+    | "Product";
+  return typeName;
 };
 
 export default resolvers;

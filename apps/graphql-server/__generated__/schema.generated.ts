@@ -3,6 +3,7 @@ import { UserDocument } from '../src/subdomains/user/data-sources/user.types';
 import { ProductDocument } from '../src/subdomains/product/data-sources/product.types';
 import { BrandDocument } from '../src/subdomains/brand/data-sources/brand.types';
 import { LikeDocument } from '../src/subdomains/like/data-sources/like.types';
+import { VoteDocument } from '../src/subdomains/vote/data-sources/vote.types';
 import { GraphQLCustomResolversContext } from '../src/server/types';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -20,12 +21,14 @@ export type Scalars = {
   HTML: any;
 };
 
-export type Brand = Likeable & Node & {
+export type Brand = Likeable & Node & Voteable & {
   __typename?: 'Brand';
   id: Scalars['ID'];
   likeSummary: LikeSummary;
   name: Scalars['String'];
   userLike?: Maybe<Like>;
+  userVote?: Maybe<Vote>;
+  votesSummary: VotesSummary;
 };
 
 /**
@@ -44,6 +47,18 @@ export type Contribution = {
 };
 
 
+
+export type DislikeAddPayload = {
+  __typename?: 'DislikeAddPayload';
+  likable?: Maybe<Likeable>;
+  userErrors: Array<UserError>;
+};
+
+export type DislikeDeletePayload = {
+  __typename?: 'DislikeDeletePayload';
+  likable?: Maybe<Likeable>;
+  userErrors: Array<UserError>;
+};
 
 export type DisplayableError = {
   field?: Maybe<Array<Scalars['String']>>;
@@ -71,8 +86,14 @@ export type Likeable = {
   userLike?: Maybe<Like>;
 };
 
-export type LikePayload = {
-  __typename?: 'LikePayload';
+export type LikeAddPayload = {
+  __typename?: 'LikeAddPayload';
+  likable?: Maybe<Likeable>;
+  userErrors: Array<UserError>;
+};
+
+export type LikeDeletePayload = {
+  __typename?: 'LikeDeletePayload';
   likable?: Maybe<Likeable>;
   userErrors: Array<UserError>;
 };
@@ -90,10 +111,14 @@ export enum LikeType {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  dislikeAdd: LikePayload;
-  dislikeDelete: LikePayload;
-  likeAdd: LikePayload;
-  likeDelete: LikePayload;
+  dislikeAdd: DislikeAddPayload;
+  dislikeDelete: DislikeDeletePayload;
+  likeAdd: LikeAddPayload;
+  likeDelete: LikeDeletePayload;
+  voteSetAbusive: VoteSetAbusivePayload;
+  voteSetDown: VoteSetDownPayload;
+  voteSetUp: VoteSetUpPayload;
+  voteUnset: VoteUnsetPayload;
 };
 
 
@@ -113,6 +138,26 @@ export type MutationLikeAddArgs = {
 
 
 export type MutationLikeDeleteArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationVoteSetAbusiveArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationVoteSetDownArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationVoteSetUpArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationVoteUnsetArgs = {
   id: Scalars['ID'];
 };
 
@@ -141,7 +186,7 @@ export type PageInfo = {
   startCursor?: Maybe<Scalars['String']>;
 };
 
-export type Product = Likeable & Node & {
+export type Product = Likeable & Node & Voteable & {
   __typename?: 'Product';
   description: Scalars['String'];
   id: Scalars['ID'];
@@ -151,6 +196,8 @@ export type Product = Likeable & Node & {
   productRatings: ProductRatingConnection;
   productRatingsSummary: ProductRatingsSummary;
   userLike?: Maybe<Like>;
+  userVote?: Maybe<Vote>;
+  votesSummary: VotesSummary;
 };
 
 
@@ -161,7 +208,7 @@ export type ProductProductRatingsArgs = {
   last?: Maybe<Scalars['Int']>;
 };
 
-export type ProductRating = Contribution & Node & Timestamps & Votable & {
+export type ProductRating = Contribution & Node & Timestamps & {
   __typename?: 'ProductRating';
   comments: ProductRatingCommentConnection;
   cons?: Maybe<Array<Scalars['String']>>;
@@ -175,8 +222,6 @@ export type ProductRating = Contribution & Node & Timestamps & Votable & {
   text?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
-  userVote?: Maybe<Vote>;
-  votesSummary: VotesSummary;
 };
 
 
@@ -187,7 +232,7 @@ export type ProductRatingCommentsArgs = {
   last?: Maybe<Scalars['Int']>;
 };
 
-export type ProductRatingComment = Contribution & Node & Timestamps & Votable & {
+export type ProductRatingComment = Contribution & Node & Timestamps & {
   __typename?: 'ProductRatingComment';
   createdAt: Scalars['DateTime'];
   creator: User;
@@ -195,8 +240,6 @@ export type ProductRatingComment = Contribution & Node & Timestamps & Votable & 
   rating: ProductRating;
   text: Scalars['String'];
   updatedAt: Scalars['DateTime'];
-  userVote?: Maybe<Vote>;
-  votesSummary: VotesSummary;
 };
 
 export type ProductRatingCommentConnection = Connection & {
@@ -337,18 +380,34 @@ export type UserError = DisplayableError & {
   message: Scalars['String'];
 };
 
-export type Votable = {
+export type Vote = {
+  __typename?: 'Vote';
+  type: VoteType;
+  user?: Maybe<User>;
+};
+
+export type Voteable = {
+  id: Scalars['ID'];
   userVote?: Maybe<Vote>;
   votesSummary: VotesSummary;
 };
 
-export type Vote = Timestamps & {
-  __typename?: 'Vote';
-  createdAt: Scalars['DateTime'];
-  id: Scalars['ID'];
-  type: VoteType;
-  updatedAt: Scalars['DateTime'];
-  user: User;
+export type VoteSetAbusivePayload = {
+  __typename?: 'VoteSetAbusivePayload';
+  userErrors: Array<UserError>;
+  voteable?: Maybe<Voteable>;
+};
+
+export type VoteSetDownPayload = {
+  __typename?: 'VoteSetDownPayload';
+  userErrors: Array<UserError>;
+  voteable?: Maybe<Voteable>;
+};
+
+export type VoteSetUpPayload = {
+  __typename?: 'VoteSetUpPayload';
+  userErrors: Array<UserError>;
+  voteable?: Maybe<Voteable>;
 };
 
 export type VotesSummary = {
@@ -364,10 +423,16 @@ export type VotesSummary = {
 };
 
 export enum VoteType {
-  AbusiveVote = 'AbusiveVote',
-  DownVote = 'DownVote',
-  UpVote = 'UpVote'
+  Abusive = 'Abusive',
+  Down = 'Down',
+  Up = 'Up'
 }
+
+export type VoteUnsetPayload = {
+  __typename?: 'VoteUnsetPayload';
+  userErrors: Array<UserError>;
+  voteable?: Maybe<Voteable>;
+};
 
 
 
@@ -453,6 +518,8 @@ export type ResolversTypes = {
   Contribution: ResolversTypes['ProductRating'] | ResolversTypes['ProductRatingComment'];
   Date: ResolverTypeWrapper<Scalars['Date']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
+  DislikeAddPayload: ResolverTypeWrapper<Omit<DislikeAddPayload, 'likable'> & { likable?: Maybe<ResolversTypes['Likeable']> }>;
+  DislikeDeletePayload: ResolverTypeWrapper<Omit<DislikeDeletePayload, 'likable'> & { likable?: Maybe<ResolversTypes['Likeable']> }>;
   DisplayableError: ResolversTypes['UserError'];
   Edge: ResolversTypes['ProductRatingCommentEdge'] | ResolversTypes['ProductRatingEdge'];
   Float: ResolverTypeWrapper<Scalars['Float']>;
@@ -461,15 +528,16 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Like: ResolverTypeWrapper<LikeDocument>;
   Likeable: ResolversTypes['Brand'] | ResolversTypes['Product'];
-  LikePayload: ResolverTypeWrapper<Omit<LikePayload, 'likable'> & { likable?: Maybe<ResolversTypes['Likeable']> }>;
+  LikeAddPayload: ResolverTypeWrapper<Omit<LikeAddPayload, 'likable'> & { likable?: Maybe<ResolversTypes['Likeable']> }>;
+  LikeDeletePayload: ResolverTypeWrapper<Omit<LikeDeletePayload, 'likable'> & { likable?: Maybe<ResolversTypes['Likeable']> }>;
   LikeSummary: ResolverTypeWrapper<LikeSummary>;
   LikeType: LikeType;
   Mutation: ResolverTypeWrapper<{}>;
   Node: ResolversTypes['Brand'] | ResolversTypes['Product'] | ResolversTypes['ProductRating'] | ResolversTypes['ProductRatingComment'] | ResolversTypes['User'];
   PageInfo: ResolverTypeWrapper<PageInfo>;
   Product: ResolverTypeWrapper<ProductDocument>;
-  ProductRating: ResolverTypeWrapper<Omit<ProductRating, 'comments' | 'creator' | 'product' | 'userVote'> & { comments: ResolversTypes['ProductRatingCommentConnection'], creator: ResolversTypes['User'], product: ResolversTypes['Product'], userVote?: Maybe<ResolversTypes['Vote']> }>;
-  ProductRatingComment: ResolverTypeWrapper<Omit<ProductRatingComment, 'creator' | 'rating' | 'userVote'> & { creator: ResolversTypes['User'], rating: ResolversTypes['ProductRating'], userVote?: Maybe<ResolversTypes['Vote']> }>;
+  ProductRating: ResolverTypeWrapper<Omit<ProductRating, 'comments' | 'creator' | 'product'> & { comments: ResolversTypes['ProductRatingCommentConnection'], creator: ResolversTypes['User'], product: ResolversTypes['Product'] }>;
+  ProductRatingComment: ResolverTypeWrapper<Omit<ProductRatingComment, 'creator' | 'rating'> & { creator: ResolversTypes['User'], rating: ResolversTypes['ProductRating'] }>;
   ProductRatingCommentConnection: ResolverTypeWrapper<Omit<ProductRatingCommentConnection, 'edges'> & { edges: Array<ResolversTypes['ProductRatingCommentEdge']> }>;
   ProductRatingCommentEdge: ResolverTypeWrapper<Omit<ProductRatingCommentEdge, 'node'> & { node: ResolversTypes['ProductRatingComment'] }>;
   ProductRatingConnection: ResolverTypeWrapper<Omit<ProductRatingConnection, 'edges'> & { edges: Array<ResolversTypes['ProductRatingEdge']> }>;
@@ -477,13 +545,17 @@ export type ResolversTypes = {
   ProductRatingsSummary: ResolverTypeWrapper<ProductRatingsSummary>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
-  Timestamps: ResolversTypes['ProductRating'] | ResolversTypes['ProductRatingComment'] | ResolversTypes['Vote'];
+  Timestamps: ResolversTypes['ProductRating'] | ResolversTypes['ProductRatingComment'];
   User: ResolverTypeWrapper<UserDocument>;
   UserError: ResolverTypeWrapper<UserError>;
-  Votable: ResolversTypes['ProductRating'] | ResolversTypes['ProductRatingComment'];
-  Vote: ResolverTypeWrapper<Omit<Vote, 'user'> & { user: ResolversTypes['User'] }>;
+  Vote: ResolverTypeWrapper<VoteDocument>;
+  Voteable: ResolversTypes['Brand'] | ResolversTypes['Product'];
+  VoteSetAbusivePayload: ResolverTypeWrapper<Omit<VoteSetAbusivePayload, 'voteable'> & { voteable?: Maybe<ResolversTypes['Voteable']> }>;
+  VoteSetDownPayload: ResolverTypeWrapper<Omit<VoteSetDownPayload, 'voteable'> & { voteable?: Maybe<ResolversTypes['Voteable']> }>;
+  VoteSetUpPayload: ResolverTypeWrapper<Omit<VoteSetUpPayload, 'voteable'> & { voteable?: Maybe<ResolversTypes['Voteable']> }>;
   VotesSummary: ResolverTypeWrapper<VotesSummary>;
   VoteType: VoteType;
+  VoteUnsetPayload: ResolverTypeWrapper<Omit<VoteUnsetPayload, 'voteable'> & { voteable?: Maybe<ResolversTypes['Voteable']> }>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -494,6 +566,8 @@ export type ResolversParentTypes = {
   Contribution: ResolversParentTypes['ProductRating'] | ResolversParentTypes['ProductRatingComment'];
   Date: Scalars['Date'];
   DateTime: Scalars['DateTime'];
+  DislikeAddPayload: Omit<DislikeAddPayload, 'likable'> & { likable?: Maybe<ResolversParentTypes['Likeable']> };
+  DislikeDeletePayload: Omit<DislikeDeletePayload, 'likable'> & { likable?: Maybe<ResolversParentTypes['Likeable']> };
   DisplayableError: ResolversParentTypes['UserError'];
   Edge: ResolversParentTypes['ProductRatingCommentEdge'] | ResolversParentTypes['ProductRatingEdge'];
   Float: Scalars['Float'];
@@ -502,14 +576,15 @@ export type ResolversParentTypes = {
   Int: Scalars['Int'];
   Like: LikeDocument;
   Likeable: ResolversParentTypes['Brand'] | ResolversParentTypes['Product'];
-  LikePayload: Omit<LikePayload, 'likable'> & { likable?: Maybe<ResolversParentTypes['Likeable']> };
+  LikeAddPayload: Omit<LikeAddPayload, 'likable'> & { likable?: Maybe<ResolversParentTypes['Likeable']> };
+  LikeDeletePayload: Omit<LikeDeletePayload, 'likable'> & { likable?: Maybe<ResolversParentTypes['Likeable']> };
   LikeSummary: LikeSummary;
   Mutation: {};
   Node: ResolversParentTypes['Brand'] | ResolversParentTypes['Product'] | ResolversParentTypes['ProductRating'] | ResolversParentTypes['ProductRatingComment'] | ResolversParentTypes['User'];
   PageInfo: PageInfo;
   Product: ProductDocument;
-  ProductRating: Omit<ProductRating, 'comments' | 'creator' | 'product' | 'userVote'> & { comments: ResolversParentTypes['ProductRatingCommentConnection'], creator: ResolversParentTypes['User'], product: ResolversParentTypes['Product'], userVote?: Maybe<ResolversParentTypes['Vote']> };
-  ProductRatingComment: Omit<ProductRatingComment, 'creator' | 'rating' | 'userVote'> & { creator: ResolversParentTypes['User'], rating: ResolversParentTypes['ProductRating'], userVote?: Maybe<ResolversParentTypes['Vote']> };
+  ProductRating: Omit<ProductRating, 'comments' | 'creator' | 'product'> & { comments: ResolversParentTypes['ProductRatingCommentConnection'], creator: ResolversParentTypes['User'], product: ResolversParentTypes['Product'] };
+  ProductRatingComment: Omit<ProductRatingComment, 'creator' | 'rating'> & { creator: ResolversParentTypes['User'], rating: ResolversParentTypes['ProductRating'] };
   ProductRatingCommentConnection: Omit<ProductRatingCommentConnection, 'edges'> & { edges: Array<ResolversParentTypes['ProductRatingCommentEdge']> };
   ProductRatingCommentEdge: Omit<ProductRatingCommentEdge, 'node'> & { node: ResolversParentTypes['ProductRatingComment'] };
   ProductRatingConnection: Omit<ProductRatingConnection, 'edges'> & { edges: Array<ResolversParentTypes['ProductRatingEdge']> };
@@ -517,12 +592,16 @@ export type ResolversParentTypes = {
   ProductRatingsSummary: ProductRatingsSummary;
   Query: {};
   String: Scalars['String'];
-  Timestamps: ResolversParentTypes['ProductRating'] | ResolversParentTypes['ProductRatingComment'] | ResolversParentTypes['Vote'];
+  Timestamps: ResolversParentTypes['ProductRating'] | ResolversParentTypes['ProductRatingComment'];
   User: UserDocument;
   UserError: UserError;
-  Votable: ResolversParentTypes['ProductRating'] | ResolversParentTypes['ProductRatingComment'];
-  Vote: Omit<Vote, 'user'> & { user: ResolversParentTypes['User'] };
+  Vote: VoteDocument;
+  Voteable: ResolversParentTypes['Brand'] | ResolversParentTypes['Product'];
+  VoteSetAbusivePayload: Omit<VoteSetAbusivePayload, 'voteable'> & { voteable?: Maybe<ResolversParentTypes['Voteable']> };
+  VoteSetDownPayload: Omit<VoteSetDownPayload, 'voteable'> & { voteable?: Maybe<ResolversParentTypes['Voteable']> };
+  VoteSetUpPayload: Omit<VoteSetUpPayload, 'voteable'> & { voteable?: Maybe<ResolversParentTypes['Voteable']> };
   VotesSummary: VotesSummary;
+  VoteUnsetPayload: Omit<VoteUnsetPayload, 'voteable'> & { voteable?: Maybe<ResolversParentTypes['Voteable']> };
 };
 
 export type BrandResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['Brand'] = ResolversParentTypes['Brand']> = {
@@ -530,6 +609,8 @@ export type BrandResolvers<ContextType = GraphQLCustomResolversContext, ParentTy
   likeSummary?: Resolver<ResolversTypes['LikeSummary'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   userLike?: Resolver<Maybe<ResolversTypes['Like']>, ParentType, ContextType>;
+  userVote?: Resolver<Maybe<ResolversTypes['Vote']>, ParentType, ContextType>;
+  votesSummary?: Resolver<ResolversTypes['VotesSummary'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -551,6 +632,18 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
   name: 'DateTime';
 }
+
+export type DislikeAddPayloadResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['DislikeAddPayload'] = ResolversParentTypes['DislikeAddPayload']> = {
+  likable?: Resolver<Maybe<ResolversTypes['Likeable']>, ParentType, ContextType>;
+  userErrors?: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type DislikeDeletePayloadResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['DislikeDeletePayload'] = ResolversParentTypes['DislikeDeletePayload']> = {
+  likable?: Resolver<Maybe<ResolversTypes['Likeable']>, ParentType, ContextType>;
+  userErrors?: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
 
 export type DisplayableErrorResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['DisplayableError'] = ResolversParentTypes['DisplayableError']> = {
   __resolveType: TypeResolveFn<'UserError', ParentType, ContextType>;
@@ -581,7 +674,13 @@ export type LikeableResolvers<ContextType = GraphQLCustomResolversContext, Paren
   userLike?: Resolver<Maybe<ResolversTypes['Like']>, ParentType, ContextType>;
 };
 
-export type LikePayloadResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['LikePayload'] = ResolversParentTypes['LikePayload']> = {
+export type LikeAddPayloadResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['LikeAddPayload'] = ResolversParentTypes['LikeAddPayload']> = {
+  likable?: Resolver<Maybe<ResolversTypes['Likeable']>, ParentType, ContextType>;
+  userErrors?: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type LikeDeletePayloadResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['LikeDeletePayload'] = ResolversParentTypes['LikeDeletePayload']> = {
   likable?: Resolver<Maybe<ResolversTypes['Likeable']>, ParentType, ContextType>;
   userErrors?: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -594,10 +693,14 @@ export type LikeSummaryResolvers<ContextType = GraphQLCustomResolversContext, Pa
 };
 
 export type MutationResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  dislikeAdd?: Resolver<ResolversTypes['LikePayload'], ParentType, ContextType, RequireFields<MutationDislikeAddArgs, 'id'>>;
-  dislikeDelete?: Resolver<ResolversTypes['LikePayload'], ParentType, ContextType, RequireFields<MutationDislikeDeleteArgs, 'id'>>;
-  likeAdd?: Resolver<ResolversTypes['LikePayload'], ParentType, ContextType, RequireFields<MutationLikeAddArgs, 'id'>>;
-  likeDelete?: Resolver<ResolversTypes['LikePayload'], ParentType, ContextType, RequireFields<MutationLikeDeleteArgs, 'id'>>;
+  dislikeAdd?: Resolver<ResolversTypes['DislikeAddPayload'], ParentType, ContextType, RequireFields<MutationDislikeAddArgs, 'id'>>;
+  dislikeDelete?: Resolver<ResolversTypes['DislikeDeletePayload'], ParentType, ContextType, RequireFields<MutationDislikeDeleteArgs, 'id'>>;
+  likeAdd?: Resolver<ResolversTypes['LikeAddPayload'], ParentType, ContextType, RequireFields<MutationLikeAddArgs, 'id'>>;
+  likeDelete?: Resolver<ResolversTypes['LikeDeletePayload'], ParentType, ContextType, RequireFields<MutationLikeDeleteArgs, 'id'>>;
+  voteSetAbusive?: Resolver<ResolversTypes['VoteSetAbusivePayload'], ParentType, ContextType, RequireFields<MutationVoteSetAbusiveArgs, 'id'>>;
+  voteSetDown?: Resolver<ResolversTypes['VoteSetDownPayload'], ParentType, ContextType, RequireFields<MutationVoteSetDownArgs, 'id'>>;
+  voteSetUp?: Resolver<ResolversTypes['VoteSetUpPayload'], ParentType, ContextType, RequireFields<MutationVoteSetUpArgs, 'id'>>;
+  voteUnset?: Resolver<ResolversTypes['VoteUnsetPayload'], ParentType, ContextType, RequireFields<MutationVoteUnsetArgs, 'id'>>;
 };
 
 export type NodeResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {
@@ -622,6 +725,8 @@ export type ProductResolvers<ContextType = GraphQLCustomResolversContext, Parent
   productRatings?: Resolver<ResolversTypes['ProductRatingConnection'], ParentType, ContextType, RequireFields<ProductProductRatingsArgs, never>>;
   productRatingsSummary?: Resolver<ResolversTypes['ProductRatingsSummary'], ParentType, ContextType>;
   userLike?: Resolver<Maybe<ResolversTypes['Like']>, ParentType, ContextType>;
+  userVote?: Resolver<Maybe<ResolversTypes['Vote']>, ParentType, ContextType>;
+  votesSummary?: Resolver<ResolversTypes['VotesSummary'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -638,8 +743,6 @@ export type ProductRatingResolvers<ContextType = GraphQLCustomResolversContext, 
   text?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  userVote?: Resolver<Maybe<ResolversTypes['Vote']>, ParentType, ContextType>;
-  votesSummary?: Resolver<ResolversTypes['VotesSummary'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -650,8 +753,6 @@ export type ProductRatingCommentResolvers<ContextType = GraphQLCustomResolversCo
   rating?: Resolver<ResolversTypes['ProductRating'], ParentType, ContextType>;
   text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  userVote?: Resolver<Maybe<ResolversTypes['Vote']>, ParentType, ContextType>;
-  votesSummary?: Resolver<ResolversTypes['VotesSummary'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -701,7 +802,7 @@ export type QueryResolvers<ContextType = GraphQLCustomResolversContext, ParentTy
 };
 
 export type TimestampsResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['Timestamps'] = ResolversParentTypes['Timestamps']> = {
-  __resolveType: TypeResolveFn<'ProductRating' | 'ProductRatingComment' | 'Vote', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'ProductRating' | 'ProductRatingComment', ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
 };
@@ -725,18 +826,34 @@ export type UserErrorResolvers<ContextType = GraphQLCustomResolversContext, Pare
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type VotableResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['Votable'] = ResolversParentTypes['Votable']> = {
-  __resolveType: TypeResolveFn<'ProductRating' | 'ProductRatingComment', ParentType, ContextType>;
+export type VoteResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['Vote'] = ResolversParentTypes['Vote']> = {
+  type?: Resolver<ResolversTypes['VoteType'], ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type VoteableResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['Voteable'] = ResolversParentTypes['Voteable']> = {
+  __resolveType: TypeResolveFn<'Brand' | 'Product', ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   userVote?: Resolver<Maybe<ResolversTypes['Vote']>, ParentType, ContextType>;
   votesSummary?: Resolver<ResolversTypes['VotesSummary'], ParentType, ContextType>;
 };
 
-export type VoteResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['Vote'] = ResolversParentTypes['Vote']> = {
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['VoteType'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+export type VoteSetAbusivePayloadResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['VoteSetAbusivePayload'] = ResolversParentTypes['VoteSetAbusivePayload']> = {
+  userErrors?: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
+  voteable?: Resolver<Maybe<ResolversTypes['Voteable']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type VoteSetDownPayloadResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['VoteSetDownPayload'] = ResolversParentTypes['VoteSetDownPayload']> = {
+  userErrors?: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
+  voteable?: Resolver<Maybe<ResolversTypes['Voteable']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type VoteSetUpPayloadResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['VoteSetUpPayload'] = ResolversParentTypes['VoteSetUpPayload']> = {
+  userErrors?: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
+  voteable?: Resolver<Maybe<ResolversTypes['Voteable']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -748,18 +865,27 @@ export type VotesSummaryResolvers<ContextType = GraphQLCustomResolversContext, P
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type VoteUnsetPayloadResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['VoteUnsetPayload'] = ResolversParentTypes['VoteUnsetPayload']> = {
+  userErrors?: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
+  voteable?: Resolver<Maybe<ResolversTypes['Voteable']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = GraphQLCustomResolversContext> = {
   Brand?: BrandResolvers<ContextType>;
   Connection?: ConnectionResolvers<ContextType>;
   Contribution?: ContributionResolvers<ContextType>;
   Date?: GraphQLScalarType;
   DateTime?: GraphQLScalarType;
+  DislikeAddPayload?: DislikeAddPayloadResolvers<ContextType>;
+  DislikeDeletePayload?: DislikeDeletePayloadResolvers<ContextType>;
   DisplayableError?: DisplayableErrorResolvers<ContextType>;
   Edge?: EdgeResolvers<ContextType>;
   HTML?: GraphQLScalarType;
   Like?: LikeResolvers<ContextType>;
   Likeable?: LikeableResolvers<ContextType>;
-  LikePayload?: LikePayloadResolvers<ContextType>;
+  LikeAddPayload?: LikeAddPayloadResolvers<ContextType>;
+  LikeDeletePayload?: LikeDeletePayloadResolvers<ContextType>;
   LikeSummary?: LikeSummaryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Node?: NodeResolvers<ContextType>;
@@ -776,9 +902,13 @@ export type Resolvers<ContextType = GraphQLCustomResolversContext> = {
   Timestamps?: TimestampsResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   UserError?: UserErrorResolvers<ContextType>;
-  Votable?: VotableResolvers<ContextType>;
   Vote?: VoteResolvers<ContextType>;
+  Voteable?: VoteableResolvers<ContextType>;
+  VoteSetAbusivePayload?: VoteSetAbusivePayloadResolvers<ContextType>;
+  VoteSetDownPayload?: VoteSetDownPayloadResolvers<ContextType>;
+  VoteSetUpPayload?: VoteSetUpPayloadResolvers<ContextType>;
   VotesSummary?: VotesSummaryResolvers<ContextType>;
+  VoteUnsetPayload?: VoteUnsetPayloadResolvers<ContextType>;
 };
 
 

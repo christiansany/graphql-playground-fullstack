@@ -14,14 +14,6 @@ type Like {
   type: LikeType!
 }
 
-# type Like implements Timestamps {
-#   id: ID!
-#   user: User!
-#   type: LikeType!
-#   createdAt: DateTime!
-#   updatedAt: DateTime!
-# }
-
 enum LikeType {
   Like
   Dislike

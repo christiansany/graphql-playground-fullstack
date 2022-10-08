@@ -17,6 +17,11 @@ export const likes: LikeDocument[] = [
     type: "Dislike",
   },
   {
+    likeable: "product:4",
+    user: "user:1",
+    type: "Like",
+  },
+  {
     likeable: "product:1",
     user: "user:2",
     type: "Like",

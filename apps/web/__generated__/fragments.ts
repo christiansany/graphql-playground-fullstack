@@ -34,12 +34,11 @@
     ],
     "Timestamps": [
       "ProductRating",
-      "ProductRatingComment",
-      "Vote"
-    ],
-    "Votable": [
-      "ProductRating",
       "ProductRatingComment"
+    ],
+    "Voteable": [
+      "Brand",
+      "Product"
     ]
   }
 };

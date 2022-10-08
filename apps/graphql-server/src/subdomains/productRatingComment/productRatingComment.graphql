@@ -8,14 +8,12 @@ type Query {
   ): ProductRatingCommentConnection!
 }
 
-type ProductRatingComment implements Node & Timestamps & Votable & Contribution {
+type ProductRatingComment implements Node & Timestamps & Contribution {
   id: ID!
   text: String!
   rating: ProductRating!
   createdAt: DateTime!
   updatedAt: DateTime!
-  votesSummary: VotesSummary!
-  userVote: Vote
   creator: User!
 }
 

@@ -3,6 +3,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { LikeableInfo } from "../../src/components/LikeableInfo";
 import { LikeDislikeActions } from "../../src/components/LikeDislikeActions";
+import { VoteableInfo } from "../../src/components/VoteableInfo";
+import { VoteActions } from "../../src/components/VoteActions";
 import { graphql } from "../../__generated__/gql";
 
 const GetProductDocument = graphql(`
@@ -12,6 +14,8 @@ const GetProductDocument = graphql(`
       name
       ...LikeableInfo_Likeable
       ...LikeDislikeActions_Likeable
+      ...VoteableInfo_Voteable
+      ...VoteActions_Voteable
     }
   }
 `);
@@ -23,8 +27,6 @@ export default function Product() {
       id: decodeURIComponent((query?.id as string) || ""),
     },
   });
-
-  console.log({ data });
 
   if (!data?.product) return null;
 
@@ -38,8 +40,12 @@ export default function Product() {
 
       <main>
         <h1>Product: {data.product.name}</h1>
+        <hr />
         <LikeableInfo likeable={data.product} />
         <LikeDislikeActions likeable={data.product} />
+        <hr />
+        <VoteableInfo voteable={data.product} />
+        <VoteActions voteable={data.product} />
       </main>
     </div>
   );

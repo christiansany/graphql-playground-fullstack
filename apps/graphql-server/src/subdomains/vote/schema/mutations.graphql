@@ -1,0 +1,26 @@
+type Mutation {
+  voteSetUp(id: ID!): VoteSetUpPayload!
+  voteSetDown(id: ID!): VoteSetDownPayload!
+  voteSetAbusive(id: ID!): VoteSetAbusivePayload!
+  voteUnset(id: ID!): VoteUnsetPayload!
+}
+
+type VoteSetUpPayload {
+  userErrors: [UserError!]!
+  voteable: Voteable
+}
+
+type VoteSetDownPayload {
+  userErrors: [UserError!]!
+  voteable: Voteable
+}
+
+type VoteSetAbusivePayload {
+  userErrors: [UserError!]!
+  voteable: Voteable
+}
+
+type VoteUnsetPayload {
+  userErrors: [UserError!]!
+  voteable: Voteable
+}

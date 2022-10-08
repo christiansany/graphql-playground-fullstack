@@ -17,12 +17,14 @@ export type Scalars = {
   HTML: any;
 };
 
-export type Brand = Likeable & Node & {
+export type Brand = Likeable & Node & Voteable & {
   __typename?: 'Brand';
   id: Scalars['ID'];
   likeSummary: LikeSummary;
   name: Scalars['String'];
   userLike?: Maybe<Like>;
+  userVote?: Maybe<Vote>;
+  votesSummary: VotesSummary;
 };
 
 /**
@@ -38,6 +40,18 @@ export type Connection = {
 
 export type Contribution = {
   creator: User;
+};
+
+export type DislikeAddPayload = {
+  __typename?: 'DislikeAddPayload';
+  likable?: Maybe<Likeable>;
+  userErrors: Array<UserError>;
+};
+
+export type DislikeDeletePayload = {
+  __typename?: 'DislikeDeletePayload';
+  likable?: Maybe<Likeable>;
+  userErrors: Array<UserError>;
 };
 
 export type DisplayableError = {
@@ -65,8 +79,14 @@ export type Likeable = {
   userLike?: Maybe<Like>;
 };
 
-export type LikePayload = {
-  __typename?: 'LikePayload';
+export type LikeAddPayload = {
+  __typename?: 'LikeAddPayload';
+  likable?: Maybe<Likeable>;
+  userErrors: Array<UserError>;
+};
+
+export type LikeDeletePayload = {
+  __typename?: 'LikeDeletePayload';
   likable?: Maybe<Likeable>;
   userErrors: Array<UserError>;
 };
@@ -84,10 +104,14 @@ export enum LikeType {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  dislikeAdd: LikePayload;
-  dislikeDelete: LikePayload;
-  likeAdd: LikePayload;
-  likeDelete: LikePayload;
+  dislikeAdd: DislikeAddPayload;
+  dislikeDelete: DislikeDeletePayload;
+  likeAdd: LikeAddPayload;
+  likeDelete: LikeDeletePayload;
+  voteSetAbusive: VoteSetAbusivePayload;
+  voteSetDown: VoteSetDownPayload;
+  voteSetUp: VoteSetUpPayload;
+  voteUnset: VoteUnsetPayload;
 };
 
 
@@ -107,6 +131,26 @@ export type MutationLikeAddArgs = {
 
 
 export type MutationLikeDeleteArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationVoteSetAbusiveArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationVoteSetDownArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationVoteSetUpArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationVoteUnsetArgs = {
   id: Scalars['ID'];
 };
 
@@ -135,7 +179,7 @@ export type PageInfo = {
   startCursor?: Maybe<Scalars['String']>;
 };
 
-export type Product = Likeable & Node & {
+export type Product = Likeable & Node & Voteable & {
   __typename?: 'Product';
   description: Scalars['String'];
   id: Scalars['ID'];
@@ -145,6 +189,8 @@ export type Product = Likeable & Node & {
   productRatings: ProductRatingConnection;
   productRatingsSummary: ProductRatingsSummary;
   userLike?: Maybe<Like>;
+  userVote?: Maybe<Vote>;
+  votesSummary: VotesSummary;
 };
 
 
@@ -155,7 +201,7 @@ export type ProductProductRatingsArgs = {
   last?: InputMaybe<Scalars['Int']>;
 };
 
-export type ProductRating = Contribution & Node & Timestamps & Votable & {
+export type ProductRating = Contribution & Node & Timestamps & {
   __typename?: 'ProductRating';
   comments: ProductRatingCommentConnection;
   cons?: Maybe<Array<Scalars['String']>>;
@@ -169,8 +215,6 @@ export type ProductRating = Contribution & Node & Timestamps & Votable & {
   text?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
-  userVote?: Maybe<Vote>;
-  votesSummary: VotesSummary;
 };
 
 
@@ -181,7 +225,7 @@ export type ProductRatingCommentsArgs = {
   last?: InputMaybe<Scalars['Int']>;
 };
 
-export type ProductRatingComment = Contribution & Node & Timestamps & Votable & {
+export type ProductRatingComment = Contribution & Node & Timestamps & {
   __typename?: 'ProductRatingComment';
   createdAt: Scalars['DateTime'];
   creator: User;
@@ -189,8 +233,6 @@ export type ProductRatingComment = Contribution & Node & Timestamps & Votable & 
   rating: ProductRating;
   text: Scalars['String'];
   updatedAt: Scalars['DateTime'];
-  userVote?: Maybe<Vote>;
-  votesSummary: VotesSummary;
 };
 
 export type ProductRatingCommentConnection = Connection & {
@@ -331,18 +373,34 @@ export type UserError = DisplayableError & {
   message: Scalars['String'];
 };
 
-export type Votable = {
+export type Vote = {
+  __typename?: 'Vote';
+  type: VoteType;
+  user?: Maybe<User>;
+};
+
+export type Voteable = {
+  id: Scalars['ID'];
   userVote?: Maybe<Vote>;
   votesSummary: VotesSummary;
 };
 
-export type Vote = Timestamps & {
-  __typename?: 'Vote';
-  createdAt: Scalars['DateTime'];
-  id: Scalars['ID'];
-  type: VoteType;
-  updatedAt: Scalars['DateTime'];
-  user: User;
+export type VoteSetAbusivePayload = {
+  __typename?: 'VoteSetAbusivePayload';
+  userErrors: Array<UserError>;
+  voteable?: Maybe<Voteable>;
+};
+
+export type VoteSetDownPayload = {
+  __typename?: 'VoteSetDownPayload';
+  userErrors: Array<UserError>;
+  voteable?: Maybe<Voteable>;
+};
+
+export type VoteSetUpPayload = {
+  __typename?: 'VoteSetUpPayload';
+  userErrors: Array<UserError>;
+  voteable?: Maybe<Voteable>;
 };
 
 export type VotesSummary = {
@@ -358,10 +416,16 @@ export type VotesSummary = {
 };
 
 export enum VoteType {
-  AbusiveVote = 'AbusiveVote',
-  DownVote = 'DownVote',
-  UpVote = 'UpVote'
+  Abusive = 'Abusive',
+  Down = 'Down',
+  Up = 'Up'
 }
+
+export type VoteUnsetPayload = {
+  __typename?: 'VoteUnsetPayload';
+  userErrors: Array<UserError>;
+  voteable?: Maybe<Voteable>;
+};
 
 export type GetBrandQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -370,7 +434,7 @@ export type GetBrandQueryVariables = Exact<{
 
 export type GetBrandQuery = { __typename?: 'Query', brand?: (
     { __typename?: 'Brand', id: string, name: string }
-    & { ' $fragmentRefs': { 'LikeableInfo_Likeable_Brand_Fragment': LikeableInfo_Likeable_Brand_Fragment;'LikeDislikeActions_Likeable_Brand_Fragment': LikeDislikeActions_Likeable_Brand_Fragment } }
+    & { ' $fragmentRefs': { 'LikeableInfo_Likeable_Brand_Fragment': LikeableInfo_Likeable_Brand_Fragment;'LikeDislikeActions_Likeable_Brand_Fragment': LikeDislikeActions_Likeable_Brand_Fragment;'VoteableInfo_Voteable_Brand_Fragment': VoteableInfo_Voteable_Brand_Fragment;'VoteActions_Voteable_Brand_Fragment': VoteActions_Voteable_Brand_Fragment } }
   ) | null };
 
 export type GetProductsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -391,7 +455,7 @@ export type GetProductQueryVariables = Exact<{
 
 export type GetProductQuery = { __typename?: 'Query', product?: (
     { __typename?: 'Product', id: string, name: string }
-    & { ' $fragmentRefs': { 'LikeableInfo_Likeable_Product_Fragment': LikeableInfo_Likeable_Product_Fragment;'LikeDislikeActions_Likeable_Product_Fragment': LikeDislikeActions_Likeable_Product_Fragment } }
+    & { ' $fragmentRefs': { 'LikeableInfo_Likeable_Product_Fragment': LikeableInfo_Likeable_Product_Fragment;'LikeDislikeActions_Likeable_Product_Fragment': LikeDislikeActions_Likeable_Product_Fragment;'VoteableInfo_Voteable_Product_Fragment': VoteableInfo_Voteable_Product_Fragment;'VoteActions_Voteable_Product_Fragment': VoteActions_Voteable_Product_Fragment } }
   ) | null };
 
 export type BrandLink_BrandFragment = (
@@ -410,7 +474,7 @@ export type LikeAddMutationVariables = Exact<{
 }>;
 
 
-export type LikeAddMutation = { __typename?: 'Mutation', likeAdd: { __typename?: 'LikePayload', likable?: (
+export type LikeAddMutation = { __typename?: 'Mutation', likeAdd: { __typename?: 'LikeAddPayload', likable?: (
       { __typename?: 'Brand' }
       & { ' $fragmentRefs': { 'LikeDislikeActions_Likeable_Brand_Fragment': LikeDislikeActions_Likeable_Brand_Fragment } }
     ) | (
@@ -423,7 +487,7 @@ export type LikeDeleteMutationVariables = Exact<{
 }>;
 
 
-export type LikeDeleteMutation = { __typename?: 'Mutation', likeDelete: { __typename?: 'LikePayload', likable?: (
+export type LikeDeleteMutation = { __typename?: 'Mutation', likeDelete: { __typename?: 'LikeDeletePayload', likable?: (
       { __typename?: 'Brand' }
       & { ' $fragmentRefs': { 'LikeDislikeActions_Likeable_Brand_Fragment': LikeDislikeActions_Likeable_Brand_Fragment } }
     ) | (
@@ -436,7 +500,7 @@ export type DislikeAddMutationVariables = Exact<{
 }>;
 
 
-export type DislikeAddMutation = { __typename?: 'Mutation', dislikeAdd: { __typename?: 'LikePayload', likable?: (
+export type DislikeAddMutation = { __typename?: 'Mutation', dislikeAdd: { __typename?: 'DislikeAddPayload', likable?: (
       { __typename?: 'Brand' }
       & { ' $fragmentRefs': { 'LikeDislikeActions_Likeable_Brand_Fragment': LikeDislikeActions_Likeable_Brand_Fragment } }
     ) | (
@@ -449,7 +513,7 @@ export type DislikeDeleteMutationVariables = Exact<{
 }>;
 
 
-export type DislikeDeleteMutation = { __typename?: 'Mutation', dislikeDelete: { __typename?: 'LikePayload', likable?: (
+export type DislikeDeleteMutation = { __typename?: 'Mutation', dislikeDelete: { __typename?: 'DislikeDeletePayload', likable?: (
       { __typename?: 'Brand' }
       & { ' $fragmentRefs': { 'LikeDislikeActions_Likeable_Brand_Fragment': LikeDislikeActions_Likeable_Brand_Fragment } }
     ) | (
@@ -468,6 +532,70 @@ export type ProductLink_ProductFragment = (
   & { ' $fragmentRefs': { 'UseProductUrl_ProductFragment': UseProductUrl_ProductFragment } }
 ) & { ' $fragmentName': 'ProductLink_ProductFragment' };
 
+type VoteActions_Voteable_Brand_Fragment = { __typename?: 'Brand', id: string, votesSummary: { __typename?: 'VotesSummary', score: number, countUp: number, countDown: number, countAbusive: number }, userVote?: { __typename?: 'Vote', type: VoteType, user?: { __typename?: 'User', id: string } | null } | null } & { ' $fragmentName': 'VoteActions_Voteable_Brand_Fragment' };
+
+type VoteActions_Voteable_Product_Fragment = { __typename?: 'Product', id: string, votesSummary: { __typename?: 'VotesSummary', score: number, countUp: number, countDown: number, countAbusive: number }, userVote?: { __typename?: 'Vote', type: VoteType, user?: { __typename?: 'User', id: string } | null } | null } & { ' $fragmentName': 'VoteActions_Voteable_Product_Fragment' };
+
+export type VoteActions_VoteableFragment = VoteActions_Voteable_Brand_Fragment | VoteActions_Voteable_Product_Fragment;
+
+export type VoteSetUpMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type VoteSetUpMutation = { __typename?: 'Mutation', voteSetUp: { __typename?: 'VoteSetUpPayload', voteable?: (
+      { __typename?: 'Brand' }
+      & { ' $fragmentRefs': { 'VoteActions_Voteable_Brand_Fragment': VoteActions_Voteable_Brand_Fragment } }
+    ) | (
+      { __typename?: 'Product' }
+      & { ' $fragmentRefs': { 'VoteActions_Voteable_Product_Fragment': VoteActions_Voteable_Product_Fragment } }
+    ) | null } };
+
+export type VoteSetDownMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type VoteSetDownMutation = { __typename?: 'Mutation', voteSetDown: { __typename?: 'VoteSetDownPayload', voteable?: (
+      { __typename?: 'Brand' }
+      & { ' $fragmentRefs': { 'VoteActions_Voteable_Brand_Fragment': VoteActions_Voteable_Brand_Fragment } }
+    ) | (
+      { __typename?: 'Product' }
+      & { ' $fragmentRefs': { 'VoteActions_Voteable_Product_Fragment': VoteActions_Voteable_Product_Fragment } }
+    ) | null } };
+
+export type VoteSetAbusiveMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type VoteSetAbusiveMutation = { __typename?: 'Mutation', voteSetAbusive: { __typename?: 'VoteSetAbusivePayload', voteable?: (
+      { __typename?: 'Brand' }
+      & { ' $fragmentRefs': { 'VoteActions_Voteable_Brand_Fragment': VoteActions_Voteable_Brand_Fragment } }
+    ) | (
+      { __typename?: 'Product' }
+      & { ' $fragmentRefs': { 'VoteActions_Voteable_Product_Fragment': VoteActions_Voteable_Product_Fragment } }
+    ) | null } };
+
+export type VoteUnsetMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type VoteUnsetMutation = { __typename?: 'Mutation', voteUnset: { __typename?: 'VoteUnsetPayload', voteable?: (
+      { __typename?: 'Brand' }
+      & { ' $fragmentRefs': { 'VoteActions_Voteable_Brand_Fragment': VoteActions_Voteable_Brand_Fragment } }
+    ) | (
+      { __typename?: 'Product' }
+      & { ' $fragmentRefs': { 'VoteActions_Voteable_Product_Fragment': VoteActions_Voteable_Product_Fragment } }
+    ) | null } };
+
+type VoteableInfo_Voteable_Brand_Fragment = { __typename?: 'Brand', votesSummary: { __typename?: 'VotesSummary', score: number, countUp: number, countDown: number, countAbusive: number }, userVote?: { __typename?: 'Vote', type: VoteType, user?: { __typename?: 'User', id: string, username: string, email: string } | null } | null } & { ' $fragmentName': 'VoteableInfo_Voteable_Brand_Fragment' };
+
+type VoteableInfo_Voteable_Product_Fragment = { __typename?: 'Product', votesSummary: { __typename?: 'VotesSummary', score: number, countUp: number, countDown: number, countAbusive: number }, userVote?: { __typename?: 'Vote', type: VoteType, user?: { __typename?: 'User', id: string, username: string, email: string } | null } | null } & { ' $fragmentName': 'VoteableInfo_Voteable_Product_Fragment' };
+
+export type VoteableInfo_VoteableFragment = VoteableInfo_Voteable_Brand_Fragment | VoteableInfo_Voteable_Product_Fragment;
+
 export type UseBrandUrl_BrandFragment = { __typename?: 'Brand', id: string } & { ' $fragmentName': 'UseBrandUrl_BrandFragment' };
 
 export type UseProductUrl_ProductFragment = { __typename?: 'Product', id: string } & { ' $fragmentName': 'UseProductUrl_ProductFragment' };
@@ -478,10 +606,16 @@ export const LikeDislikeActions_LikeableFragmentDoc = {"kind":"Document","defini
 export const LikeableInfo_LikeableFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LikeableInfo_Likeable"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Likeable"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"likeSummary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"countLikes"}},{"kind":"Field","name":{"kind":"Name","value":"countDislikes"}}]}},{"kind":"Field","name":{"kind":"Name","value":"userLike"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<LikeableInfo_LikeableFragment, unknown>;
 export const UseProductUrl_ProductFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"useProductUrl_Product"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Product"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]} as unknown as DocumentNode<UseProductUrl_ProductFragment, unknown>;
 export const ProductLink_ProductFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ProductLink_Product"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Product"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"useProductUrl_Product"}}]}},...UseProductUrl_ProductFragmentDoc.definitions]} as unknown as DocumentNode<ProductLink_ProductFragment, unknown>;
-export const GetBrandDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetBrand"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"brand"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeableInfo_Likeable"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeDislikeActions_Likeable"}}]}}]}},...LikeableInfo_LikeableFragmentDoc.definitions,...LikeDislikeActions_LikeableFragmentDoc.definitions]} as unknown as DocumentNode<GetBrandQuery, GetBrandQueryVariables>;
+export const VoteActions_VoteableFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"VoteActions_Voteable"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Voteable"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"votesSummary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"countUp"}},{"kind":"Field","name":{"kind":"Name","value":"countDown"}},{"kind":"Field","name":{"kind":"Name","value":"countAbusive"}}]}},{"kind":"Field","name":{"kind":"Name","value":"userVote"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<VoteActions_VoteableFragment, unknown>;
+export const VoteableInfo_VoteableFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"VoteableInfo_Voteable"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Voteable"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"votesSummary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"countUp"}},{"kind":"Field","name":{"kind":"Name","value":"countDown"}},{"kind":"Field","name":{"kind":"Name","value":"countAbusive"}}]}},{"kind":"Field","name":{"kind":"Name","value":"userVote"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<VoteableInfo_VoteableFragment, unknown>;
+export const GetBrandDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetBrand"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"brand"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeableInfo_Likeable"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeDislikeActions_Likeable"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteableInfo_Voteable"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteActions_Voteable"}}]}}]}},...LikeableInfo_LikeableFragmentDoc.definitions,...LikeDislikeActions_LikeableFragmentDoc.definitions,...VoteableInfo_VoteableFragmentDoc.definitions,...VoteActions_VoteableFragmentDoc.definitions]} as unknown as DocumentNode<GetBrandQuery, GetBrandQueryVariables>;
 export const GetProductsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProducts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"products"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProductLink_Product"}}]}},{"kind":"Field","name":{"kind":"Name","value":"brands"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandLink_Brand"}}]}}]}},...ProductLink_ProductFragmentDoc.definitions,...BrandLink_BrandFragmentDoc.definitions]} as unknown as DocumentNode<GetProductsQuery, GetProductsQueryVariables>;
-export const GetProductDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProduct"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"product"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeableInfo_Likeable"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeDislikeActions_Likeable"}}]}}]}},...LikeableInfo_LikeableFragmentDoc.definitions,...LikeDislikeActions_LikeableFragmentDoc.definitions]} as unknown as DocumentNode<GetProductQuery, GetProductQueryVariables>;
+export const GetProductDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProduct"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"product"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeableInfo_Likeable"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeDislikeActions_Likeable"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteableInfo_Voteable"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteActions_Voteable"}}]}}]}},...LikeableInfo_LikeableFragmentDoc.definitions,...LikeDislikeActions_LikeableFragmentDoc.definitions,...VoteableInfo_VoteableFragmentDoc.definitions,...VoteActions_VoteableFragmentDoc.definitions]} as unknown as DocumentNode<GetProductQuery, GetProductQueryVariables>;
 export const LikeAddDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LikeAdd"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"likeAdd"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"likable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeDislikeActions_Likeable"}}]}}]}}]}},...LikeDislikeActions_LikeableFragmentDoc.definitions]} as unknown as DocumentNode<LikeAddMutation, LikeAddMutationVariables>;
 export const LikeDeleteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LikeDelete"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"likeDelete"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"likable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeDislikeActions_Likeable"}}]}}]}}]}},...LikeDislikeActions_LikeableFragmentDoc.definitions]} as unknown as DocumentNode<LikeDeleteMutation, LikeDeleteMutationVariables>;
 export const DislikeAddDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DislikeAdd"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dislikeAdd"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"likable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeDislikeActions_Likeable"}}]}}]}}]}},...LikeDislikeActions_LikeableFragmentDoc.definitions]} as unknown as DocumentNode<DislikeAddMutation, DislikeAddMutationVariables>;
 export const DislikeDeleteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DislikeDelete"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dislikeDelete"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"likable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeDislikeActions_Likeable"}}]}}]}}]}},...LikeDislikeActions_LikeableFragmentDoc.definitions]} as unknown as DocumentNode<DislikeDeleteMutation, DislikeDeleteMutationVariables>;
+export const VoteSetUpDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteSetUp"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteSetUp"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteActions_Voteable"}}]}}]}}]}},...VoteActions_VoteableFragmentDoc.definitions]} as unknown as DocumentNode<VoteSetUpMutation, VoteSetUpMutationVariables>;
+export const VoteSetDownDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteSetDown"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteSetDown"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteActions_Voteable"}}]}}]}}]}},...VoteActions_VoteableFragmentDoc.definitions]} as unknown as DocumentNode<VoteSetDownMutation, VoteSetDownMutationVariables>;
+export const VoteSetAbusiveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteSetAbusive"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteSetAbusive"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteActions_Voteable"}}]}}]}}]}},...VoteActions_VoteableFragmentDoc.definitions]} as unknown as DocumentNode<VoteSetAbusiveMutation, VoteSetAbusiveMutationVariables>;
+export const VoteUnsetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteUnset"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteUnset"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteActions_Voteable"}}]}}]}}]}},...VoteActions_VoteableFragmentDoc.definitions]} as unknown as DocumentNode<VoteUnsetMutation, VoteUnsetMutationVariables>;

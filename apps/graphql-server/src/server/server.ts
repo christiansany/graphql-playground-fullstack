@@ -5,6 +5,7 @@ import UsersAPI from "../subdomains/user/data-sources/user";
 import ProductsAPI from "../subdomains/product/data-sources/product";
 import BrandsAPI from "../subdomains/brand/data-sources/brand";
 import LikeableAPI from "../subdomains/like/data-sources/like";
+import VoteableAPI from "../subdomains/vote/data-sources/vote";
 import DataLoaders from "../subdomains/dataLoaders";
 
 const server = new ApolloServer({
@@ -19,6 +20,7 @@ const server = new ApolloServer({
     Brand: new BrandsAPI(),
     Product: new ProductsAPI(),
     Likeable: new LikeableAPI(),
+    Voteable: new VoteableAPI(),
   }),
 });
 

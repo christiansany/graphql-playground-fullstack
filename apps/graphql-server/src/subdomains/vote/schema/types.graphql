@@ -1,4 +1,5 @@
-interface Votable {
+interface Voteable implements Node {
+  id: ID!
   votesSummary: VotesSummary!
   userVote: Vote
 }
@@ -22,16 +23,24 @@ type VotesSummary {
   countAbusive: Int!
 }
 
-type Vote implements Timestamps {
-  id: ID!
-  user: User!
+type Vote {
+  user: User
   type: VoteType!
-  createdAt: DateTime!
-  updatedAt: DateTime!
 }
 
 enum VoteType {
-  UpVote
-  DownVote
-  AbusiveVote
+  Up
+  Down
+  Abusive
+}
+
+# Connections
+extend type Product implements Voteable {
+  votesSummary: VotesSummary!
+  userVote: Vote
+}
+
+extend type Brand implements Voteable {
+  votesSummary: VotesSummary!
+  userVote: Vote
 }

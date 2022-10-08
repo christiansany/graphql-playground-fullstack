@@ -17,3 +17,4 @@ generates:
         Product: ../src/subdomains/product/data-sources/product.types#ProductDocument
         Brand: ../src/subdomains/brand/data-sources/brand.types#BrandDocument
         Like: ../src/subdomains/like/data-sources/like.types#LikeDocument
+        Vote: ../src/subdomains/vote/data-sources/vote.types#VoteDocument
