@@ -6,31 +6,22 @@ import {
 
 const resolvers: Resolvers = {
   Voteable: {
-    __resolveType: (source) => getVoteableTypeName(source.id),
+    votesSummary: (parent, _, { dataSources: { Voteable } }) =>
+      Voteable.getSummaryById(parent.id),
+    userVote: (parent, _, { userId, dataSources: { Voteable } }) =>
+      userId ? Voteable.getUserVote(parent.id, userId) : null,
   },
   Vote: {
     user: (parent, _, { dataSources: { User } }) => User.getById(parent.user),
   },
-  Product: {
-    votesSummary: (parent, _, { dataSources: { Voteable } }) =>
-      Voteable.getSummaryById(parent.id),
-    userVote: (parent, _, { userId, dataSources: { Voteable } }) =>
-      userId ? Voteable.getUserVote(parent.id, userId) : null,
-  },
-  Brand: {
-    votesSummary: (parent, _, { dataSources: { Voteable } }) =>
-      Voteable.getSummaryById(parent.id),
-    userVote: (parent, _, { userId, dataSources: { Voteable } }) =>
-      userId ? Voteable.getUserVote(parent.id, userId) : null,
-  },
   Mutation: {
-    voteSetUp: async (_, { id }, context) =>
+    voteSetUp: (_, { id }, context) =>
       handleVoteAction(id, "voteSetUp", context),
-    voteSetDown: async (_, { id }, context) =>
+    voteSetDown: (_, { id }, context) =>
       handleVoteAction(id, "voteSetDown", context),
-    voteSetAbusive: async (_, { id }, context) =>
+    voteSetAbusive: (_, { id }, context) =>
       handleVoteAction(id, "voteSetAbusive", context),
-    voteUnset: async (_, { id }, context) =>
+    voteUnset: (_, { id }, context) =>
       handleVoteAction(id, "voteUnset", context),
   },
 };

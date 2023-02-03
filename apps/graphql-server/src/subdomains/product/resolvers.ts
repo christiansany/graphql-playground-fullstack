@@ -7,6 +7,9 @@ const resolvers: Resolvers = {
     // products: (_, args, { dataSources: { Product } }) =>
     //   Product.getByConnection(args),
   },
+  Product: {
+    __isTypeOf: (source) => source.id.startsWith("product:"),
+  },
   // Mutation: {
   //   productCreate: (_, { input }, { dataSources: { Product } }) =>
   //     Product.createProduct(input),

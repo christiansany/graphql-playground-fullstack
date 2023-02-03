@@ -615,13 +615,13 @@ export type BrandResolvers<ContextType = GraphQLCustomResolversContext, ParentTy
 };
 
 export type ConnectionResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['Connection'] = ResolversParentTypes['Connection']> = {
-  __resolveType: TypeResolveFn<'ProductRatingCommentConnection' | 'ProductRatingConnection', ParentType, ContextType>;
+  __resolveType?: TypeResolveFn<'ProductRatingCommentConnection' | 'ProductRatingConnection', ParentType, ContextType>;
   edges?: Resolver<Array<ResolversTypes['Edge']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
 };
 
 export type ContributionResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['Contribution'] = ResolversParentTypes['Contribution']> = {
-  __resolveType: TypeResolveFn<'ProductRating' | 'ProductRatingComment', ParentType, ContextType>;
+  __resolveType?: TypeResolveFn<'ProductRating' | 'ProductRatingComment', ParentType, ContextType>;
   creator?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
 };
 
@@ -646,13 +646,13 @@ export type DislikeDeletePayloadResolvers<ContextType = GraphQLCustomResolversCo
 };
 
 export type DisplayableErrorResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['DisplayableError'] = ResolversParentTypes['DisplayableError']> = {
-  __resolveType: TypeResolveFn<'UserError', ParentType, ContextType>;
+  __resolveType?: TypeResolveFn<'UserError', ParentType, ContextType>;
   field?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
 export type EdgeResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['Edge'] = ResolversParentTypes['Edge']> = {
-  __resolveType: TypeResolveFn<'ProductRatingCommentEdge' | 'ProductRatingEdge', ParentType, ContextType>;
+  __resolveType?: TypeResolveFn<'ProductRatingCommentEdge' | 'ProductRatingEdge', ParentType, ContextType>;
   cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   node?: Resolver<ResolversTypes['Node'], ParentType, ContextType>;
 };
@@ -668,7 +668,7 @@ export type LikeResolvers<ContextType = GraphQLCustomResolversContext, ParentTyp
 };
 
 export type LikeableResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['Likeable'] = ResolversParentTypes['Likeable']> = {
-  __resolveType: TypeResolveFn<'Brand' | 'Product', ParentType, ContextType>;
+  __resolveType?: TypeResolveFn<'Brand' | 'Product', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   likeSummary?: Resolver<ResolversTypes['LikeSummary'], ParentType, ContextType>;
   userLike?: Resolver<Maybe<ResolversTypes['Like']>, ParentType, ContextType>;
@@ -704,7 +704,7 @@ export type MutationResolvers<ContextType = GraphQLCustomResolversContext, Paren
 };
 
 export type NodeResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {
-  __resolveType: TypeResolveFn<'Brand' | 'Product' | 'ProductRating' | 'ProductRatingComment' | 'User', ParentType, ContextType>;
+  __resolveType?: TypeResolveFn<'Brand' | 'Product' | 'ProductRating' | 'ProductRatingComment' | 'User', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
 };
 
@@ -802,7 +802,7 @@ export type QueryResolvers<ContextType = GraphQLCustomResolversContext, ParentTy
 };
 
 export type TimestampsResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['Timestamps'] = ResolversParentTypes['Timestamps']> = {
-  __resolveType: TypeResolveFn<'ProductRating' | 'ProductRatingComment', ParentType, ContextType>;
+  __resolveType?: TypeResolveFn<'ProductRating' | 'ProductRatingComment', ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
 };
@@ -833,7 +833,7 @@ export type VoteResolvers<ContextType = GraphQLCustomResolversContext, ParentTyp
 };
 
 export type VoteableResolvers<ContextType = GraphQLCustomResolversContext, ParentType extends ResolversParentTypes['Voteable'] = ResolversParentTypes['Voteable']> = {
-  __resolveType: TypeResolveFn<'Brand' | 'Product', ParentType, ContextType>;
+  __resolveType?: TypeResolveFn<'Brand' | 'Product', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   userVote?: Resolver<Maybe<ResolversTypes['Vote']>, ParentType, ContextType>;
   votesSummary?: Resolver<ResolversTypes['VotesSummary'], ParentType, ContextType>;

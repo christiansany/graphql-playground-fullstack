@@ -1,5 +1,9 @@
 import { FunctionComponent } from "react";
-import { FragmentType, graphql, useFragment } from "../../__generated__/gql";
+import {
+  FragmentType,
+  graphql,
+  getFragmentData,
+} from "../../__generated__/gql";
 
 const VoteableInfo_Voteable = graphql(`
   fragment VoteableInfo_Voteable on Voteable {
@@ -27,7 +31,7 @@ interface VoteableInfoProps {
 export const VoteableInfo: FunctionComponent<VoteableInfoProps> = ({
   voteable: voteableData,
 }) => {
-  const voteable = useFragment(VoteableInfo_Voteable, voteableData);
+  const voteable = getFragmentData(VoteableInfo_Voteable, voteableData);
 
   return (
     <>

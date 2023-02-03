@@ -5,6 +5,9 @@ documents:
 generates:
   __generated__/gql/:
     preset: client-preset
+    presetConfig:
+      fragmentMasking:
+        unmaskFunctionName: "getFragmentData"
   __generated__/fragments.ts:
     plugins:
       - "fragment-matcher"

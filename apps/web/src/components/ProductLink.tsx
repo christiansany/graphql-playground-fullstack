@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { FunctionComponent } from "react";
-import { FragmentType, graphql, useFragment } from "../../__generated__/gql";
+import {
+  FragmentType,
+  graphql,
+  getFragmentData,
+} from "../../__generated__/gql";
 import { useProductUrl } from "./useProductUrl";
 
 const ProductLink_Product = graphql(`
@@ -17,7 +21,7 @@ interface ProductLinkProps {
 export const ProductLink: FunctionComponent<ProductLinkProps> = ({
   product: productData,
 }) => {
-  const product = useFragment(ProductLink_Product, productData);
+  const product = getFragmentData(ProductLink_Product, productData);
   const productUrl = useProductUrl(product);
   return (
     <Link href={productUrl}>

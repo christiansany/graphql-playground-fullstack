@@ -532,63 +532,17 @@ export type ProductLink_ProductFragment = (
   & { ' $fragmentRefs': { 'UseProductUrl_ProductFragment': UseProductUrl_ProductFragment } }
 ) & { ' $fragmentName': 'ProductLink_ProductFragment' };
 
-type VoteActions_Voteable_Brand_Fragment = { __typename?: 'Brand', id: string, votesSummary: { __typename?: 'VotesSummary', score: number, countUp: number, countDown: number, countAbusive: number }, userVote?: { __typename?: 'Vote', type: VoteType, user?: { __typename?: 'User', id: string } | null } | null } & { ' $fragmentName': 'VoteActions_Voteable_Brand_Fragment' };
+type VoteActions_Voteable_Brand_Fragment = (
+  { __typename?: 'Brand', userVote?: { __typename?: 'Vote', type: VoteType } | null }
+  & { ' $fragmentRefs': { 'UseVoteActions_Voteable_Brand_Fragment': UseVoteActions_Voteable_Brand_Fragment } }
+) & { ' $fragmentName': 'VoteActions_Voteable_Brand_Fragment' };
 
-type VoteActions_Voteable_Product_Fragment = { __typename?: 'Product', id: string, votesSummary: { __typename?: 'VotesSummary', score: number, countUp: number, countDown: number, countAbusive: number }, userVote?: { __typename?: 'Vote', type: VoteType, user?: { __typename?: 'User', id: string } | null } | null } & { ' $fragmentName': 'VoteActions_Voteable_Product_Fragment' };
+type VoteActions_Voteable_Product_Fragment = (
+  { __typename?: 'Product', userVote?: { __typename?: 'Vote', type: VoteType } | null }
+  & { ' $fragmentRefs': { 'UseVoteActions_Voteable_Product_Fragment': UseVoteActions_Voteable_Product_Fragment } }
+) & { ' $fragmentName': 'VoteActions_Voteable_Product_Fragment' };
 
 export type VoteActions_VoteableFragment = VoteActions_Voteable_Brand_Fragment | VoteActions_Voteable_Product_Fragment;
-
-export type VoteSetUpMutationVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type VoteSetUpMutation = { __typename?: 'Mutation', voteSetUp: { __typename?: 'VoteSetUpPayload', voteable?: (
-      { __typename?: 'Brand' }
-      & { ' $fragmentRefs': { 'VoteActions_Voteable_Brand_Fragment': VoteActions_Voteable_Brand_Fragment } }
-    ) | (
-      { __typename?: 'Product' }
-      & { ' $fragmentRefs': { 'VoteActions_Voteable_Product_Fragment': VoteActions_Voteable_Product_Fragment } }
-    ) | null } };
-
-export type VoteSetDownMutationVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type VoteSetDownMutation = { __typename?: 'Mutation', voteSetDown: { __typename?: 'VoteSetDownPayload', voteable?: (
-      { __typename?: 'Brand' }
-      & { ' $fragmentRefs': { 'VoteActions_Voteable_Brand_Fragment': VoteActions_Voteable_Brand_Fragment } }
-    ) | (
-      { __typename?: 'Product' }
-      & { ' $fragmentRefs': { 'VoteActions_Voteable_Product_Fragment': VoteActions_Voteable_Product_Fragment } }
-    ) | null } };
-
-export type VoteSetAbusiveMutationVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type VoteSetAbusiveMutation = { __typename?: 'Mutation', voteSetAbusive: { __typename?: 'VoteSetAbusivePayload', voteable?: (
-      { __typename?: 'Brand' }
-      & { ' $fragmentRefs': { 'VoteActions_Voteable_Brand_Fragment': VoteActions_Voteable_Brand_Fragment } }
-    ) | (
-      { __typename?: 'Product' }
-      & { ' $fragmentRefs': { 'VoteActions_Voteable_Product_Fragment': VoteActions_Voteable_Product_Fragment } }
-    ) | null } };
-
-export type VoteUnsetMutationVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type VoteUnsetMutation = { __typename?: 'Mutation', voteUnset: { __typename?: 'VoteUnsetPayload', voteable?: (
-      { __typename?: 'Brand' }
-      & { ' $fragmentRefs': { 'VoteActions_Voteable_Brand_Fragment': VoteActions_Voteable_Brand_Fragment } }
-    ) | (
-      { __typename?: 'Product' }
-      & { ' $fragmentRefs': { 'VoteActions_Voteable_Product_Fragment': VoteActions_Voteable_Product_Fragment } }
-    ) | null } };
 
 type VoteableInfo_Voteable_Brand_Fragment = { __typename?: 'Brand', votesSummary: { __typename?: 'VotesSummary', score: number, countUp: number, countDown: number, countAbusive: number }, userVote?: { __typename?: 'Vote', type: VoteType, user?: { __typename?: 'User', id: string, username: string, email: string } | null } | null } & { ' $fragmentName': 'VoteableInfo_Voteable_Brand_Fragment' };
 
@@ -600,14 +554,80 @@ export type UseBrandUrl_BrandFragment = { __typename?: 'Brand', id: string } & {
 
 export type UseProductUrl_ProductFragment = { __typename?: 'Product', id: string } & { ' $fragmentName': 'UseProductUrl_ProductFragment' };
 
+type UseVoteActions_Voteable_Brand_Fragment = { __typename?: 'Brand', id: string } & { ' $fragmentName': 'UseVoteActions_Voteable_Brand_Fragment' };
+
+type UseVoteActions_Voteable_Product_Fragment = { __typename?: 'Product', id: string } & { ' $fragmentName': 'UseVoteActions_Voteable_Product_Fragment' };
+
+export type UseVoteActions_VoteableFragment = UseVoteActions_Voteable_Brand_Fragment | UseVoteActions_Voteable_Product_Fragment;
+
+type VoteSetHookFragment_Votable_Brand_Fragment = { __typename?: 'Brand', id: string, votesSummary: { __typename?: 'VotesSummary', score: number, countUp: number, countDown: number, countAbusive: number }, userVote?: { __typename?: 'Vote', type: VoteType, user?: { __typename?: 'User', id: string } | null } | null } & { ' $fragmentName': 'VoteSetHookFragment_Votable_Brand_Fragment' };
+
+type VoteSetHookFragment_Votable_Product_Fragment = { __typename?: 'Product', id: string, votesSummary: { __typename?: 'VotesSummary', score: number, countUp: number, countDown: number, countAbusive: number }, userVote?: { __typename?: 'Vote', type: VoteType, user?: { __typename?: 'User', id: string } | null } | null } & { ' $fragmentName': 'VoteSetHookFragment_Votable_Product_Fragment' };
+
+export type VoteSetHookFragment_VotableFragment = VoteSetHookFragment_Votable_Brand_Fragment | VoteSetHookFragment_Votable_Product_Fragment;
+
+export type VoteSetUpMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type VoteSetUpMutation = { __typename?: 'Mutation', voteSetUp: { __typename?: 'VoteSetUpPayload', voteable?: (
+      { __typename?: 'Brand' }
+      & { ' $fragmentRefs': { 'VoteSetHookFragment_Votable_Brand_Fragment': VoteSetHookFragment_Votable_Brand_Fragment } }
+    ) | (
+      { __typename?: 'Product' }
+      & { ' $fragmentRefs': { 'VoteSetHookFragment_Votable_Product_Fragment': VoteSetHookFragment_Votable_Product_Fragment } }
+    ) | null } };
+
+export type VoteSetDownMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type VoteSetDownMutation = { __typename?: 'Mutation', voteSetDown: { __typename?: 'VoteSetDownPayload', voteable?: (
+      { __typename?: 'Brand' }
+      & { ' $fragmentRefs': { 'VoteSetHookFragment_Votable_Brand_Fragment': VoteSetHookFragment_Votable_Brand_Fragment } }
+    ) | (
+      { __typename?: 'Product' }
+      & { ' $fragmentRefs': { 'VoteSetHookFragment_Votable_Product_Fragment': VoteSetHookFragment_Votable_Product_Fragment } }
+    ) | null } };
+
+export type VoteSetAbusiveMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type VoteSetAbusiveMutation = { __typename?: 'Mutation', voteSetAbusive: { __typename?: 'VoteSetAbusivePayload', voteable?: (
+      { __typename?: 'Brand' }
+      & { ' $fragmentRefs': { 'VoteSetHookFragment_Votable_Brand_Fragment': VoteSetHookFragment_Votable_Brand_Fragment } }
+    ) | (
+      { __typename?: 'Product' }
+      & { ' $fragmentRefs': { 'VoteSetHookFragment_Votable_Product_Fragment': VoteSetHookFragment_Votable_Product_Fragment } }
+    ) | null } };
+
+export type VoteUnsetMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type VoteUnsetMutation = { __typename?: 'Mutation', voteUnset: { __typename?: 'VoteUnsetPayload', voteable?: (
+      { __typename?: 'Brand' }
+      & { ' $fragmentRefs': { 'VoteSetHookFragment_Votable_Brand_Fragment': VoteSetHookFragment_Votable_Brand_Fragment } }
+    ) | (
+      { __typename?: 'Product' }
+      & { ' $fragmentRefs': { 'VoteSetHookFragment_Votable_Product_Fragment': VoteSetHookFragment_Votable_Product_Fragment } }
+    ) | null } };
+
 export const UseBrandUrl_BrandFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"useBrandUrl_Brand"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]} as unknown as DocumentNode<UseBrandUrl_BrandFragment, unknown>;
 export const BrandLink_BrandFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"BrandLink_Brand"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Brand"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"useBrandUrl_Brand"}}]}},...UseBrandUrl_BrandFragmentDoc.definitions]} as unknown as DocumentNode<BrandLink_BrandFragment, unknown>;
 export const LikeDislikeActions_LikeableFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LikeDislikeActions_Likeable"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Likeable"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"likeSummary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"countLikes"}},{"kind":"Field","name":{"kind":"Name","value":"countDislikes"}}]}},{"kind":"Field","name":{"kind":"Name","value":"userLike"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]} as unknown as DocumentNode<LikeDislikeActions_LikeableFragment, unknown>;
 export const LikeableInfo_LikeableFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LikeableInfo_Likeable"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Likeable"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"likeSummary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"countLikes"}},{"kind":"Field","name":{"kind":"Name","value":"countDislikes"}}]}},{"kind":"Field","name":{"kind":"Name","value":"userLike"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<LikeableInfo_LikeableFragment, unknown>;
 export const UseProductUrl_ProductFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"useProductUrl_Product"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Product"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]} as unknown as DocumentNode<UseProductUrl_ProductFragment, unknown>;
 export const ProductLink_ProductFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ProductLink_Product"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Product"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"useProductUrl_Product"}}]}},...UseProductUrl_ProductFragmentDoc.definitions]} as unknown as DocumentNode<ProductLink_ProductFragment, unknown>;
-export const VoteActions_VoteableFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"VoteActions_Voteable"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Voteable"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"votesSummary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"countUp"}},{"kind":"Field","name":{"kind":"Name","value":"countDown"}},{"kind":"Field","name":{"kind":"Name","value":"countAbusive"}}]}},{"kind":"Field","name":{"kind":"Name","value":"userVote"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<VoteActions_VoteableFragment, unknown>;
+export const UseVoteActions_VoteableFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UseVoteActions_Voteable"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Voteable"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]} as unknown as DocumentNode<UseVoteActions_VoteableFragment, unknown>;
+export const VoteActions_VoteableFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"VoteActions_Voteable"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Voteable"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userVote"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"UseVoteActions_Voteable"}}]}},...UseVoteActions_VoteableFragmentDoc.definitions]} as unknown as DocumentNode<VoteActions_VoteableFragment, unknown>;
 export const VoteableInfo_VoteableFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"VoteableInfo_Voteable"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Voteable"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"votesSummary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"countUp"}},{"kind":"Field","name":{"kind":"Name","value":"countDown"}},{"kind":"Field","name":{"kind":"Name","value":"countAbusive"}}]}},{"kind":"Field","name":{"kind":"Name","value":"userVote"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<VoteableInfo_VoteableFragment, unknown>;
+export const VoteSetHookFragment_VotableFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"VoteSetHookFragment_Votable"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Voteable"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"votesSummary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"countUp"}},{"kind":"Field","name":{"kind":"Name","value":"countDown"}},{"kind":"Field","name":{"kind":"Name","value":"countAbusive"}}]}},{"kind":"Field","name":{"kind":"Name","value":"userVote"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<VoteSetHookFragment_VotableFragment, unknown>;
 export const GetBrandDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetBrand"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"brand"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeableInfo_Likeable"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeDislikeActions_Likeable"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteableInfo_Voteable"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteActions_Voteable"}}]}}]}},...LikeableInfo_LikeableFragmentDoc.definitions,...LikeDislikeActions_LikeableFragmentDoc.definitions,...VoteableInfo_VoteableFragmentDoc.definitions,...VoteActions_VoteableFragmentDoc.definitions]} as unknown as DocumentNode<GetBrandQuery, GetBrandQueryVariables>;
 export const GetProductsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProducts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"products"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProductLink_Product"}}]}},{"kind":"Field","name":{"kind":"Name","value":"brands"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"BrandLink_Brand"}}]}}]}},...ProductLink_ProductFragmentDoc.definitions,...BrandLink_BrandFragmentDoc.definitions]} as unknown as DocumentNode<GetProductsQuery, GetProductsQueryVariables>;
 export const GetProductDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProduct"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"product"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeableInfo_Likeable"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeDislikeActions_Likeable"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteableInfo_Voteable"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteActions_Voteable"}}]}}]}},...LikeableInfo_LikeableFragmentDoc.definitions,...LikeDislikeActions_LikeableFragmentDoc.definitions,...VoteableInfo_VoteableFragmentDoc.definitions,...VoteActions_VoteableFragmentDoc.definitions]} as unknown as DocumentNode<GetProductQuery, GetProductQueryVariables>;
@@ -615,7 +635,7 @@ export const LikeAddDocument = {"kind":"Document","definitions":[{"kind":"Operat
 export const LikeDeleteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LikeDelete"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"likeDelete"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"likable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeDislikeActions_Likeable"}}]}}]}}]}},...LikeDislikeActions_LikeableFragmentDoc.definitions]} as unknown as DocumentNode<LikeDeleteMutation, LikeDeleteMutationVariables>;
 export const DislikeAddDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DislikeAdd"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dislikeAdd"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"likable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeDislikeActions_Likeable"}}]}}]}}]}},...LikeDislikeActions_LikeableFragmentDoc.definitions]} as unknown as DocumentNode<DislikeAddMutation, DislikeAddMutationVariables>;
 export const DislikeDeleteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DislikeDelete"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dislikeDelete"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"likable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LikeDislikeActions_Likeable"}}]}}]}}]}},...LikeDislikeActions_LikeableFragmentDoc.definitions]} as unknown as DocumentNode<DislikeDeleteMutation, DislikeDeleteMutationVariables>;
-export const VoteSetUpDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteSetUp"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteSetUp"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteActions_Voteable"}}]}}]}}]}},...VoteActions_VoteableFragmentDoc.definitions]} as unknown as DocumentNode<VoteSetUpMutation, VoteSetUpMutationVariables>;
-export const VoteSetDownDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteSetDown"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteSetDown"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteActions_Voteable"}}]}}]}}]}},...VoteActions_VoteableFragmentDoc.definitions]} as unknown as DocumentNode<VoteSetDownMutation, VoteSetDownMutationVariables>;
-export const VoteSetAbusiveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteSetAbusive"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteSetAbusive"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteActions_Voteable"}}]}}]}}]}},...VoteActions_VoteableFragmentDoc.definitions]} as unknown as DocumentNode<VoteSetAbusiveMutation, VoteSetAbusiveMutationVariables>;
-export const VoteUnsetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteUnset"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteUnset"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteActions_Voteable"}}]}}]}}]}},...VoteActions_VoteableFragmentDoc.definitions]} as unknown as DocumentNode<VoteUnsetMutation, VoteUnsetMutationVariables>;
+export const VoteSetUpDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteSetUp"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteSetUp"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteSetHookFragment_Votable"}}]}}]}}]}},...VoteSetHookFragment_VotableFragmentDoc.definitions]} as unknown as DocumentNode<VoteSetUpMutation, VoteSetUpMutationVariables>;
+export const VoteSetDownDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteSetDown"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteSetDown"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteSetHookFragment_Votable"}}]}}]}}]}},...VoteSetHookFragment_VotableFragmentDoc.definitions]} as unknown as DocumentNode<VoteSetDownMutation, VoteSetDownMutationVariables>;
+export const VoteSetAbusiveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteSetAbusive"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteSetAbusive"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteSetHookFragment_Votable"}}]}}]}}]}},...VoteSetHookFragment_VotableFragmentDoc.definitions]} as unknown as DocumentNode<VoteSetAbusiveMutation, VoteSetAbusiveMutationVariables>;
+export const VoteUnsetDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VoteUnset"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteUnset"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voteable"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"VoteSetHookFragment_Votable"}}]}}]}}]}},...VoteSetHookFragment_VotableFragmentDoc.definitions]} as unknown as DocumentNode<VoteUnsetMutation, VoteUnsetMutationVariables>;

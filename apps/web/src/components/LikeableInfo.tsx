@@ -1,5 +1,9 @@
 import { FunctionComponent } from "react";
-import { FragmentType, graphql, useFragment } from "../../__generated__/gql";
+import {
+  FragmentType,
+  graphql,
+  getFragmentData,
+} from "../../__generated__/gql";
 
 const LikeableInfo_Likeable = graphql(`
   fragment LikeableInfo_Likeable on Likeable {
@@ -25,7 +29,7 @@ interface LikeableInfoProps {
 export const LikeableInfo: FunctionComponent<LikeableInfoProps> = ({
   likeable: likeableData,
 }) => {
-  const likeable = useFragment(LikeableInfo_Likeable, likeableData);
+  const likeable = getFragmentData(LikeableInfo_Likeable, likeableData);
 
   return (
     <>

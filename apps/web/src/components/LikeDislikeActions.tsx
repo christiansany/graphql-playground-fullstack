@@ -1,5 +1,9 @@
 import { FunctionComponent } from "react";
-import { FragmentType, graphql, useFragment } from "../../__generated__/gql";
+import {
+  FragmentType,
+  graphql,
+  getFragmentData,
+} from "../../__generated__/gql";
 import { useMutation } from "@apollo/client";
 
 const LikeDislikeActions_Likeable = graphql(`
@@ -62,7 +66,7 @@ interface LikeDislikeActionsProps {
 export const LikeDislikeActions: FunctionComponent<LikeDislikeActionsProps> = ({
   likeable: likeableData,
 }) => {
-  const likeable = useFragment(LikeDislikeActions_Likeable, likeableData);
+  const likeable = getFragmentData(LikeDislikeActions_Likeable, likeableData);
   const options = {
     variables: {
       id: likeable.id,

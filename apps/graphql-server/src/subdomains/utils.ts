@@ -1,3 +1,5 @@
+import { Node } from "../../__generated__/schema.generated";
+
 const toBase64 = (str: string | number) =>
   Buffer.from(str.toString(), "utf-8").toString("base64");
 
